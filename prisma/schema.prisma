@@ -1,0 +1,57 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model Author {
+  id          Int          @id @default(autoincrement())
+  name        String
+  email       String       @unique
+  ifscCode    String       @map("ifsc")
+  bankAccount String       @unique @map("bank_account")
+  books       Books[]
+  withdrawals Withdrawal[]
+
+  @@map("authors")
+}
+
+model Books {
+  id             Int    @id @default(autoincrement())
+  title          String
+  authorId       Int    @map("author_id")
+  royaltyPerSale Int    @map("royalty_per_sale")
+  author         Author @relation(fields: [authorId], references: [id])
+  sales          Sale[]
+
+  @@map("books")
+}
+
+model Sale {
+  id       Int      @id @default(autoincrement())
+  quantity Int
+  bookId   Int      @map("book_id")
+  saleDate DateTime @map("sale_date")
+  book     Books    @relation(fields: [bookId], references: [id])
+
+  @@map("sales")
+}
+
+model Withdrawal {
+  id        Int              @id @default(autoincrement())
+  amount    Int
+  status    WithdrawalStatus @default(pending)
+  authorId  Int
+  createdAt DateTime         @default(now())
+  author    Author           @relation(fields: [authorId], references: [id])
+
+  @@map("withdrawals")
+}
+
+enum WithdrawalStatus {
+  pending
+  approved
+}

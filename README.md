@@ -52,14 +52,14 @@ npm start
 ### Example Request
 
 ```bash
-curl -X POST https://your-app.onrender.com/withdrawals \
+curl -X POST https://bookleaf-backend-assignment.onrender.com/withdrawals \
   -H "Content-Type: application/json" \
   -d '{"author_id": 1, "amount": 1000}'
 ```
 
 ## Deployment
 
-Deployed on Render: https://my-app.onrender.com
+Deployed on Render: https://bookleaf-backend-assignment.onrender.com
 
 **Build Command**: `npm install`  
 **Start Command**: `npm start`
